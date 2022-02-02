@@ -4,4 +4,8 @@ node('master')
       {
         sh 'echo "stage one"'
        }
+       stage('two')
+      {
+      git 'https://github.com/m-chiranjeevi1/jenkins-scripts.git'
+       }
   }
