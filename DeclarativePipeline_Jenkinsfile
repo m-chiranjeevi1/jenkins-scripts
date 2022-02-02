@@ -3,6 +3,14 @@ pipeline
     agent master
     stages
     {
+        
+        stage('stage01')
+        {
+            steps
+            {
+                sh 'echo "jenkins strting"'
+            }
+        } 
         stage('ContDownload')
         {
             steps
