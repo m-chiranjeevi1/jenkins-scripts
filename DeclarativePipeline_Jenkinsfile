@@ -1,0 +1,52 @@
+pipeline
+{
+    agent any
+    stages
+    {
+        stage('ContDownload')
+        {
+            steps
+            {
+                https://github.com/m-chiranjeevi1/jenkins-scripts.git
+            }
+        }
+        stage('ContBuild')
+        {
+            steps
+            {
+                sh 'mvn package'
+            }
+        }
+        stage('ContDeployment')
+        {
+            steps
+            {
+                sh 'scp /home/ec2-user/.jenkins/workspace/job1/webapp/target/webapp.war ubuntu@172.31.9.214:/var/lib/tomcat9/webapps/good.war'
+            }
+        }
+        stage('ContTesting')
+        {
+            steps
+            {
+                git 'https://github.com/selenium-saikrishna/TestingOnLinux.git'
+                sh 'echo "testing passed"'
+            }
+        }
+    }
+    post
+    {
+        success
+        {
+            input message: 'Waiting for approval from DM'
+            sh 'scp /home/ec2-user/.jenkins/workspace/job1/webapp/target/webapp.war ec2-user@172.31.6.94:/var/lib/tomcat/webapps/bad.war'
+        }
+        failure
+        {
+            mail bcc: '', body: '', cc: '', from: 'madurichiranjeevi2013@gmail.com', replyTo: '', subject: 'Build failed', to: 'madurichiranjeevi8@gmail.com'
+            
+        }
+        
+     }
+      
+    
+}
