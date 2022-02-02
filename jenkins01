@@ -1,0 +1,7 @@
+node('master')
+ {
+    stage('one')
+      {
+        sh 'echo "stage one"'
+       }
+  }
