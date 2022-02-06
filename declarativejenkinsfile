@@ -55,6 +55,49 @@ pipeline
         }
         
      }
+     
+     
+     
+     
+     pipeline{
+    agent none
+    tools {
+     maven 'maven01'
+    }
+    stages{
+        stage('start')
+        {
+           agent {
+            label 'master'
+           } 
+            steps
+            {
+                sh 'echo "welcome to jenkins "'
+                sh 'echo "how r u"'
+            }
+        }
+        stage('download')
+        {
+           agent {
+            label 'master'
+           } 
+            steps
+            {
+                git 'https://github.com/m-chiranjeevi1/spring-boot-demo-docker1.git'
+            }
+        }
+        stage('build')
+        {
+            agent {
+             label 'slave'
+            }
+            steps
+            {
+                 sh 'mvn package'
+            }
+        }
+    }
+}
       
     
 }
